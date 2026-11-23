@@ -56,7 +56,7 @@ const items=[
 {id:22,name:'Project Planner',desc:'Break a project into manageable tasks.',price:9,cat:'planning',bg:'#ede5f7',tag:'PROJECT'},
 {id:23,name:'Brain Dump Sheet',desc:'Write down ideas and tasks to sort later.',price:1,cat:'planning',bg:'#f9edda',tag:'BRAIN DUMP'},
 {id:24,name:'Digital Notes Page',desc:'A simple page for notes and reminders.',price:9,cat:'life',bg:'#e7f2e3',tag:'NOTES'}
-];
+items.forEach(x=>x.price=0);
 let cart=[];const products=document.getElementById('products');
 function draw(filter='all'){products.innerHTML=items.filter(x=>filter==='all'||x.cat===filter).map(x=>`<article class="product"><div class="cover" style="background:${x.bg}"><div class="sheet"><h4>PLANORA</h4><small>${x.tag}</small>${[1,2,3,4].map(()=>'<div class="line"></div>').join('')}<div class="tick"><i></i><i></i><i></i></div></div></div><div class="meta"><h3>${x.name}</h3><p>${x.desc}</p><div class="buyrow"><span class="price">₹${x.price}</span><button class="add" onclick="add(${x.id})">Add to cart</button></div></div></article>`).join('')}
 document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');draw(b.dataset.filter)}));
