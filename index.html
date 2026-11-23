@@ -58,10 +58,60 @@ const items=[
 {id:24,name:'Digital Notes Page',desc:'A simple page for notes and reminders.',price:9,cat:'life',bg:'#e7f2e3',tag:'NOTES'}
 items.forEach(x=>x.price=0);
 let cart=[];const products=document.getElementById('products');
-function draw(filter='all'){products.innerHTML=items.filter(x=>filter==='all'||x.cat===filter).map(x=>`<article class="product"><div class="cover" style="background:${x.bg}"><div class="sheet"><h4>PLANORA</h4><small>${x.tag}</small>${[1,2,3,4].map(()=>'<div class="line"></div>').join('')}<div class="tick"><i></i><i></i><i></i></div></div></div><div class="meta"><h3>${x.name}</h3><p>${x.desc}</p><div class="buyrow"><span class="price">₹${x.price}</span><button class="add" onclick="add(${x.id})">Add to cart</button></div></div></article>`).join('')}
+function draw(filter='all'){
+products.innerHTML=items.filter(x=>filter==='all'||x.cat===filter).map(x=>`
+<article class="product">
+<div class="cover" style="background:${x.bg}">
+<div class="sheet">
+<h4>PLANORA</h4>
+<small>${x.tag}</small>
+${[1,2,3,4].map(()=>'<div class="line"></div>').join('')}
+<div class="tick"><i></i><i></i><i></i></div>
+</div>
+</div>
+<div class="meta">
+<h3>${x.name}</h3>
+<p>${x.desc}</p>
+<div class="buyrow">
+<span class="price">FREE</span>
+<button class="add" onclick="downloadProduct(${x.id})">Download Free</button>
+</div>
+</div>
+</article>`).join('');
+}
 document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');draw(b.dataset.filter)}));
-function add(id){cart.push(items.find(x=>x.id===id));document.getElementById('cartcount').textContent=cart.length;openCart();renderCart()}
-function openCart(){document.getElementById('modal').style.display='flex';renderCart()}function closeCart(){document.getElementById('modal').style.display='none'}
+function downloadProduct(id){
+const x=items.find(p=>p.id===id);
+if(!x)return;
+const content=`PLANORA — ${x.name}
+
+${x.desc}
+
+Created by PLANORA
+
+Notes:
+________________________________
+
+________________________________
+
+________________________________
+
+________________________________
+
+________________________________
+`;
+const blob=new Blob([content],{type:'text/plain'});
+const a=document.createElement('a');
+a.href=URL.createObjectURL(blob);
+a.download='PLANORA-'+x.name.replace(/\s+/g,'-')+'.txt';
+a.click();
+URL.revokeObjectURL(a.href);
+}
+function openCart(){}
+function closeCart(){}
+function renderCart(){}
+function removeItem(){}
+function checkoutInfo(){}
 function renderCart(){let el=document.getElementById('cartlist');el.innerHTML=cart.length?cart.map((x,i)=>`<div class="cartitem"><span>${x.name}</span><span>₹${x.price} <button class="remove" onclick="removeItem(${i})" aria-label="Remove">×</button></span></div>`).join(''):'<p>Your cart is empty for now.</p>';document.getElementById('total').textContent='₹'+cart.reduce((a,x)=>a+x.price,0)}
 function removeItem(i){cart.splice(i,1);document.getElementById('cartcount').textContent=cart.length;renderCart()}
 function checkoutInfo(){alert('This is a prototype. Payment and delivery will be added later with a parent or guardian helping set up payment accounts.')}
